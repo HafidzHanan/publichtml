@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drag-and-Drop Video Player</title>
+    <style>
+      #video-player {
+        width: 640px;
+        height: 360px;
+        background-color: black;
+      }
+    </style>
+    <script>
+      function handleFileSelect(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+
+        var files = evt.dataTransfer.files; // FileList object.
+
+        // Only process one file.
+        var file = files[0];
+
+        var videoPlayer = document.getElementById("video-player");
+
+        // Set the video source to the dropped file.
+        videoPlayer.src = URL.createObjectURL(file);
+      }
+
+      function handleDragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
+      }
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+          var videoPlayer = document.getElementById("video-player");
+
+          // Listen for the "drop" event to handle file dropping.
+          videoPlayer.addEventListener("drop", handleFileSelect, false);
+
+          // Listen for the "dragover" event to handle drag-and-drop.
+          videoPlayer.addEventListener("dragover", handleDragOver, false);
+        },
+        false
+      );
+    </script>
+  </head>
+  <body>
+    <div id="video-player"></div>
+  </body>
+</html>
