@@ -1,75 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Drag-and-Drop Video Player</title>
-    <style>
-      #video-player {
-        width: 640px;
-        height: 360px;
-        background-color: black;
-      }
-      #navbar {
-        display: none !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        background-color: #333;
-        color: white;
-        padding: 10px;
-        box-sizing: border-box;
-        z-index: 1;
-      }
-    </style>
-    <script>
-      function handleFileSelect(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
+<head>
+	<title>Local Video Player</title>
+	<style>
+		body {
+			background-color: black;
+			color: white;
+		}
 
-        var files = evt.dataTransfer.files; // FileList object.
+		#video-player {
+			background-color: black;
+		}
+	</style>
+</head>
+<body>
+	<input type="file" id="video-input" accept=".mp4,.mkv" style="color: white;">
+	<br>
+	<video id="video-player" width="640" height="480" controls>
+		<source src="" type="">
+		Your browser does not support the video tag.
+	</video>
+	<script>
+		const videoInput = document.getElementById("video-input");
+		const videoPlayer = document.getElementById("video-player");
 
-        // Only process one file.
-        var file = files[0];
+		videoInput.addEventListener("change", () => {
+			const file = videoInput.files[0];
+			const url = URL.createObjectURL(file);
+			const type = file.type;
 
-        var videoPlayer = document.getElementById("video-player");
-        var navbar = document.getElementById("navbar");
-
-        // Set the video source to the dropped file.
-        videoPlayer.src = URL.createObjectURL(file);
-
-        // Show the navbar and display the file name.
-        navbar.style.display = "block";
-        navbar.textContent = "Playing: " + file.name;
-      }
-
-      function handleDragOver(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        evt.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
-      }
-
-      document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-          var videoPlayer = document.getElementById("video-player");
-          var navbar = document.getElementById("navbar");
-
-          // Listen for the "drop" event to handle file dropping.
-          videoPlayer.addEventListener("drop", handleFileSelect, false);
-
-          // Listen for the "dragover" event to handle drag-and-drop.
-          videoPlayer.addEventListener("dragover", handleDragOver, false);
-
-          // Hide the navbar initially.
-          navbar.style.display = "none";
-        },
-        false
-      );
-    </script>
-  </head>
-  <body>
-    <div id="navbar"></div>
-    <div id="video-player"></div>
-  </body>
+			videoPlayer.src = url;
+			videoPlayer.type = type;
+			videoPlayer.load();
+		});
+	</script>
+</body>
 </html>
