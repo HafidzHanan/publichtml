@@ -8,6 +8,19 @@
         height: 360px;
         background-color: black;
       }
+      #navbar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        box-sizing: border-box;
+        z-index: 1;
+      }
     </style>
     <script>
       function handleFileSelect(evt) {
@@ -20,9 +33,14 @@
         var file = files[0];
 
         var videoPlayer = document.getElementById("video-player");
+        var navbar = document.getElementById("navbar");
 
         // Set the video source to the dropped file.
         videoPlayer.src = URL.createObjectURL(file);
+
+        // Show the navbar and display the file name.
+        navbar.style.display = "block";
+        navbar.textContent = "Playing: " + file.name;
       }
 
       function handleDragOver(evt) {
@@ -35,18 +53,23 @@
         "DOMContentLoaded",
         function () {
           var videoPlayer = document.getElementById("video-player");
+          var navbar = document.getElementById("navbar");
 
           // Listen for the "drop" event to handle file dropping.
           videoPlayer.addEventListener("drop", handleFileSelect, false);
 
           // Listen for the "dragover" event to handle drag-and-drop.
           videoPlayer.addEventListener("dragover", handleDragOver, false);
+
+          // Hide the navbar initially.
+          navbar.style.display = "none";
         },
         false
       );
     </script>
   </head>
   <body>
+    <div id="navbar"></div>
     <div id="video-player"></div>
   </body>
 </html>
